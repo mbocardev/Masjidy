@@ -1,8 +1,9 @@
 const express = require('express');
-const { getPrayerTimesByCity } = require('../controllers/prayerController');
+const { getPrayerTimings } = require('../controllers/prayerController');
+
 const router = express.Router();
 
-// Route pour obtenir les horaires de prière
-router.get('/timings', getPrayerTimesByCity);
+// Route pour récupérer les horaires de prière
+router.get('/timings', getPrayerTimings);
 
 module.exports = router;
