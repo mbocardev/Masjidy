@@ -1,21 +1,19 @@
 const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-
-dotenv.config(); // Charger les variables d'environnement
+const mongoose = require('mongoose');
+const prayerRoutes = require('./routes/prayerRoutes');
 
 const app = express();
-app.use(cors()); // Activer les requêtes CORS
-app.use(express.json()); // Middleware pour analyser le corps des requêtes JSON
+app.use(express.json());
 
-const PORT = process.env.PORT || 5000;
+// Définir le chemin de base pour les routes de prières
+app.use('/api/prayer', prayerRoutes);
 
-// Routes de l'application
-app.use('/api/prayers', require('./routes/prayerRoutes'));
-app.use('/api/donations', require('./routes/donationRoutes'));
-app.use('/api/imam', require('./routes/imamRoutes'));
-
-// Démarrer le serveur
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+// Lancement du serveur
+const PORT = 5000;
+mongoose
+  .connect('mongodb://127.0.0.1:27017/masjidy')
+  .then(() => {
+    console.log('Connexion à MongoDB réussie');
+    app.listen(PORT, () => console.log(`Le serveur est en cours d'exécution sur le port ${PORT}`));
+  })
+  .catch((error) => console.log('Erreur de connexion à MongoDB :', error));
